@@ -6,7 +6,8 @@ mak5 </br>
 wifipineapple</br>
 
 #安装方法</br>
-`opkg install XXXXXXXXXX.ipk`</br>
+> `opkg install XXXXXXXXXX.ipk`</br>
+
 或<br>
 直接替换掉Wifipineapple的web文件夹
-`cp -rf * /pineapple/`
+> `cp -rf * /pineapple/`
