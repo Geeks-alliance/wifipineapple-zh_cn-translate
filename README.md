@@ -2,5 +2,5 @@
 菠萝派 中文汉化
 
 # 鸣谢
-mak5
+mak5 </br>
 wifipineapple
