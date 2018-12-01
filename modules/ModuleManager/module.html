@@ -1,0 +1,147 @@
+<div ng-controller="ModuleManagerController">
+    <div class="row" ng-hide="linking">
+        <div class="col-sm-12">
+
+            <p class="alert well-sm alert-success" ng-show="installedModule">插件安装成功</p>
+            <p class="alert well-sm alert-success" ng-show="removedModule">插件移除成功</p>
+
+            <div ng-hide="gotAvailableModules">
+                <button class="btn btn-default" ng-click="getAvailableModules()" ng-disabled="loading">从官网获取新插件</button>
+                <img src="img/throbber.gif" ng-show="loading">
+                <br/><br/>
+            </div>
+            <div class="alert well-sm alert-danger" ng-show="connectionError">
+                {{ connectionError }}
+            </div>
+
+            <div class="panel panel-default" ng-if="(selectedModule !== false)">
+                <div class="panel-heading">
+                    <h3 class="panel-title">安装插件: {{ selectedModule.module }}</h3>
+                </div>
+                <div class="panel-body text-center" ng-if='(downloading === false && installing === false)'>
+                    <button class="btn btn-default" ng-show="selectedModule.sd" ng-click="downloadModule('sd')">
+                        安装到外部内存卡上
+                    </button>
+                    <button class="btn btn-default" ng-show="selectedModule.internal" ng-click="downloadModule('internal')">
+                        安装到内部存储上
+                    </button>
+                    <br><span class="text-info" ng-show="(!selectedModule.sd && selectedModule.internal && device !=== 'tetra')">强烈建议安装到外部内存卡上而不是内部存储.</span>
+                    <span ng-show="(!selectedModule.sd && !selectedModule.internal)">
+                        您没有足够的可用空间来安装此插件。请插入一张外部内存卡.
+                    </span>
+                </div>
+                <div class="panel-body text-center" ng-if='downloading === true'>
+                    <img src="img/throbber.gif"><br>
+                    下载插件中...请稍等.
+                </div>
+                <div class="panel-body text-center" ng-if='installing === true'>
+                    <img src="img/throbber.gif"><br>
+                    安装插件中...请稍等.
+                </div>
+            </div>
+
+            <div class="panel panel-default" ng-show="gotAvailableModules">
+                <div class="panel-heading">
+                    <h3 class="panel-title">可用的插件<button class="btn btn-default btn-xs btn-fixed-length pull-right" ng-click="getAvailableModules()">刷新</button></h3>
+                </div>
+                <div class="table-responsive table-dropdown">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>插件</th>
+                                <th>版本</th>
+                                <th>描述</th>
+                                <th>作者</th>
+                                <th>大小</th>
+                                <th>类型</th>
+                                <th>安装状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="(moduleName, module) in availableModules" ng-if="module.installed === undefined">
+                                <td>
+                                    {{ module['title'] }}
+                                </td>
+                                <td>
+                                    {{ module['version'] }}
+                                </td>
+                                <td>
+                                    {{ module['description'] }}
+                                </td>
+                                <td>
+                                    {{ module['author'] }}
+                                </td>
+                                <td>
+                                    {{ (module['size']/1024).toFixed(2) }}K
+                                </td>
+                                <td>
+                                    {{ module['type'] }}
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary btn-xs btn-fixed-length" ng-hide="module.installable" ng-click="checkDestination(moduleName, module['size'])">更新</button>
+                                    <button type="button" class="btn btn-default btn-xs btn-fixed-length" ng-show="module.installable" ng-click="checkDestination(moduleName, module['size'])">安装</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 text-center" ng-if="linking">
+            <img src="img/throbber.gif">
+        </div>
+    </div>
+
+    <div class="row" ng-hide="linking">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">已安装的插件</h3>
+                </div>
+                <div class="table-responsive table-dropdown">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>插件</th>
+                                <th>版本</th>
+                                <th>描述</th>
+                                <th>大小</th>
+                                <th>作者</th>
+                                <th>类型</th>
+                                <th>安装状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="(moduleName, module) in installedModules" ng-hide="(module['type'] == 'System')">
+                                <td>
+                                    {{ module['title'] }}
+                                </td>
+                                <td>
+                                    {{ module['version'] }}
+                                </td>
+                                <td>
+                                    {{ module['description'] }}
+                                </td>
+                                <td>
+                                    {{ module['size'] }}
+                                </td>
+                                <td>
+                                    {{ module['author'] }}
+                                </td>
+                                <td>
+                                    {{ module['type'] }}
+                                </td>
+                                <td>
+                                <button type="button" class="btn btn-danger btn-xs btn-fixed-length" ng-hide="(module['type'] === 'System')" ng-click="removeModule(moduleName)">移除</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

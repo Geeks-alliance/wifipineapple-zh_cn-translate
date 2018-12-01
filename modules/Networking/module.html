@@ -1,0 +1,375 @@
+<div class="row">
+    <div class="col-md-12" ng-controller="NetworkingRouteController">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">路由信息
+                    <span class="dropdown">
+                        <button class="btn btn-xs btn-default dropdown-toggle" type="button" id="NetworkingRouteDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="NetworkingRouteDropdown">
+                            <li ng-click="restartDNS()"><a>重新启动DNS</a></li>
+                        </ul>
+                    </span>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <p class="alert well-sm alert-success" ng-show="restartedDNS">DNS重启成功</p>
+                <pre class="scrollable-pre">{{ routeTable }}</pre>
+
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="input-group">
+                            <span class="input-group-addon">默认路由</span>
+                            <input type="text" class="form-control" id="routeIP" name="routeIP" placeholder="172.16.42.42" ng-model="routeIP">
+                            <span class="input-group-addon">物理接口设备</span>
+                            <select class="form-control inline-form" id="routeInterface" name="routeInterface" ng-model="routeInterface">
+                                <option ng-repeat="interface in routeInterfaces">{{ interface }}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12 input-group" ng-show="updatedRoute">
+                            <br/>
+                            <p class="alert well-sm alert-success">默认路由已成功更新。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-3">
+                    <div class="row">
+                        <div class="input-group">
+                            <button class="btn btn-default" ng-click="updateRoute()">更新路由设置</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6" ng-controller="NetworkingAccessPointsController">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">访问点</h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="input-group">
+                            <span class="input-group-addon">热点信道</span>
+                            <select class="form-control" ng-model="apConfig['selectedChannel']">
+                                <option ng-repeat="channel in apConfig['availableChannels']">{{ channel }}</option>
+                            </select>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="fixed-addon-width-3 input-group-addon">管理员SSID</span>
+                            <input type="text" class="form-control" ng-model="apConfig['managementSSID']">
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="fixed-addon-width-3 input-group-addon">管理员SSID密码</span>
+                            <input type="password" class="form-control" ng-model="apConfig['managementKey']">
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <div class="col-md-5">
+                               <div class="checkbox">
+                                    <label for="hideManagementAP"><input id="hideManagementAP" type="checkbox" value="" ng-model="apConfig['hideManagementAP']">隐藏管理SSID</label>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="checkbox">
+                                    <label for="disableManagementAP"><input id="disableManagementAP" type="checkbox" value="" ng-model="apConfig['disableManagementAP']">关闭管理SSID</label>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+                    <div class="row">
+                        <div class="input-group">
+                            <span class="input-group-addon">开放的SSID</span>
+                            <input type="text" class="form-control" ng-model="apConfig['openSSID']">
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="input-group-addon">最大连接客户端个数</span>
+                            <input type="text" class="form-control" ng-model="apConfig['maxClients']">
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <div class="col-md-12">
+                               <div class="checkbox">
+                                    <label for="hideOpenAP"><input id="hideOpenAP" type="checkbox" value="" ng-model="apConfig['hideOpenAP']">隐藏开放的SSID</label>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <button class="btn btn-default" ng-click="saveAPConfiguration()">更新访问点设置</button>
+                        </div>
+                        <br/>
+                        <div class="alert well-sm alert-success" ng-show="apConfigurationSaved">已经保存了无线配置。设备现在将重新启动。如果通过无线连接，则可能需要重新连接。</div>
+                        <div class="alert well-sm alert-danger" ng-show="apConfigurationError">{{ apConfigurationError }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div ng-controller="NetworkingFirewallController" ng-show="device == 'tetra'">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">防火墙</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="input-group">
+                                <div class="checkbox">
+                                    <label><input type="checkbox" ng-model="WANSSHAccess">允许通过广域网访问SSH</label><br/>
+                                    <label><input type="checkbox" ng-model="WANUIAccess">允许网线访问WEB界面</label>
+                                </div>
+                                <br/>
+                                <button class="btn btn-default" ng-click="setFirewallConfig();">保存</button>
+                            </div>
+                            <br/>
+                            <div class="alert well-sm alert-success" ng-show="firewallUpdated">防火墙配置已更新.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-controller="OUILookupController">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">全球MAC地址定位查找
+                        <span class="dropdown">
+                        <button class="btn btn-xs btn-default dropdown-toggle" type="button" id="OUIDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="OUIDropdown">
+                            <li ng-click="removeOUIDatabase()"><a>移除全球MAC地址定位查找数据库</a></li>
+                        </ul>
+                    </span>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div ng-if="isOUIPresent()">
+                        <form class="form-inline" role="form" novalidate>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">MAC 地址</span>
+                                    <input name="macAddress" placeholder="00:11:22:33:44:55" type="text" class="form-control" id="macAddress" ng-model="$parent.macAddress">
+                                </div>
+                                <br/>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button ng-click="lookupMACAddress();" ng-disabled="ouiLoading" class="btn btn-default"><span ng-hide="ouiLoading">查找</span><img class="center-block" ng-show="ouiLoading" src="img/throbber.gif" /></button>
+                            </div>
+                            <br/>
+                        </form>
+                        <br/>
+                        <span ng-show="vendor">{{ vendor }}</span>
+                    </div>
+                    <div ng-if="!isOUIPresent()">
+                        <button ng-click="downloadOUIDatabase()" ng-disabled="gettingOUI" class="btn btn-default"><span ng-hide="gettingOUI">下载全球MAC地址定位查找数据库</span><img class="center-block" ng-show="gettingOUI" src="img/throbber.gif" /></button>
+                        <br/>
+                        <span class="text-muted">提示: 全球MAC地址定位查找数据以下载完毕</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-controller="NetworkingClientModeController">
+            <div class="panel panel-default" >
+                <div class="panel-heading">
+                    <h3 class="panel-title">WiFi客户端模式</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-12" ng-show="connected">
+                        <div class="row">
+                            <div class="input-group">
+                                <span class="input-group-addon">物理网卡接口</span>
+                                <input type="text" class="form-control" ng-model="connectedInterface" disabled>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <span class="fixed-addon-width input-group-addon">SSID</span>
+                                <input type="text" class="form-control" ng-model="connectedSSID" disabled>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <span class="fixed-addon-width input-group-addon">IP地址</span>
+                                <input type="text" class="form-control" ng-model="connectedIP" disabled>
+                            </div>
+                            <br/>
+                            <button class="btn btn-default" ng-click="checkConnection()" ng-hide="disconnecting">刷新</button>
+                            <button class="btn btn-default" ng-click="disconnect()" ng-hide="disconnecting">断开连接</button>
+                            <img src="img/throbber.gif" ng-show="disconnecting">
+                        </div>
+                    </div>
+                    <div class="col-md-12" ng-hide="connected">
+                        <div class="row">
+                            <div class="input-group">
+                                <span class="input-group-addon">物理网卡接口</span>
+                                <select class="form-control" ng-model="selectedInterface" ng-disabled="scanning">
+                                    <option ng-repeat="interface in interfaces">{{ interface }}</option>
+                                </select>
+                                <span class="input-group-btn">
+                                    <button ng-disabled="scanning" class="btn btn-default" type="button" ng-click="scanForNetworks()">
+                                        <span ng-hide="scanning">扫描</span>
+                                        <img class="image-small-18" src="img/throbber.gif" ng-show="scanning">
+                                    </button>
+                                </span>
+                            </div>
+                            <small class="text-muted" ng-hide="accessPoints.length !== 0" ng-show="selectedInterface === 'wlan1' || selectedInterface === 'wlan1mon'"> <h2>提示: 选择Wlan1物理网卡将会影响到PineAP插件使用.如需多开请去极客之眼QQ群659155551 联系群主购买新的网卡</h2></small>
+                            <div class="alert well-sm alert-warning" role="alert" ng-show="noNetworkFound">
+                                <span>没有发现可用的网络.</span>
+                            </div>
+                            <br/>
+                        </div>
+                        <div class="row" ng-show="accessPoints.length">
+                            <div class="input-group">
+                                <span class="input-group-addon">访问点</span>
+                                <select class="form-control" ng-options="ap.ssid for ap in accessPoints track by ap.mac" ng-model="selectedAP"></select>
+                            </div>
+                            <br/>
+                            <div class="input-group" ng-show="(selectedAP['security'] !== 'Open')">
+                                <span class="input-group-addon">密码</span>
+                                <input type="password" class="form-control" ng-model="key">
+                            </div>
+                            <br/>
+                        </div>
+                        <br/><br/>
+                        <div class="row" ng-show="accessPoints.length">
+                            <div class="input-group">
+                                <span class="fixed-addon-width-2 input-group-addon">BSSID</span>
+                                <input type="text" class="form-control" ng-model="selectedAP['mac']" disabled>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <span class="fixed-addon-width-2 input-group-addon">SSID</span>
+                                <input type="text" class="form-control" ng-model="selectedAP['ssid']" disabled>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <span class="fixed-addon-width-2 input-group-addon">信道</span>
+                                <input type="text" class="form-control" ng-model="selectedAP['channel']" disabled>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <span class="fixed-addon-width-2 input-group-addon">信号</span>
+                                <input type="text" class="form-control" ng-model="selectedAP['signal']" disabled>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <span class="fixed-addon-width-2 input-group-addon">信号质量</span>
+                                <input type="text" class="form-control" ng-model="selectedAP['quality']" disabled>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <span class="fixed-addon-width-2 input-group-addon">安全协议</span>
+                                <input type="text" class="form-control" ng-model="selectedAP['security']" disabled>
+                            </div>
+                            <br/>
+                        </div>
+                        <div class="row">
+                            <button class="btn btn-default" ng-click="connectToAP()" ng-show="accessPoints.length" ng-disabled="connecting">
+                                <span ng-hide="connecting">连接</span>
+                                <img class="image-small-18" src="img/throbber.gif" ng-show="connecting">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6" ng-controller="NetworkingMACAddressesController">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">MAC地址
+                    <span class="dropdown">
+                        <button ng-disabled="modifyingMAC" class="btn btn-xs btn-default dropdown-toggle" type="button" id="NetworkingAccessPointsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="NetworkingAccessPointsDropdown">
+                            <li ng-disabled="waiting" ng-click="resetMac()"><a>重置为默认的MAC地址</a></li>
+                        </ul>
+                    </span>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="input-group">
+                            <span class="input-group-addon">物理网卡接口</span>
+                            <select ng-disabled="modifyingMAC" class="form-control" ng-model="selectedInterface">
+                                <option ng-repeat="(interface, mac) in interfaces">{{ interface }}</option>
+                            </select>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="fixed-addon-width-3 input-group-addon">当前MAC地址</span>
+                            <input type="text" class="form-control autoselect" ng-model="interfaces[selectedInterface]" disabled>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="fixed-addon-width-3 input-group-addon">新的MAC地址</span>
+                            <input ng-disabled="modifyingMAC" type="text" class="form-control" ng-model="newMac">
+                        </div>
+                        <br/><br/>
+                        <button ng-disabled="modifyingMAC" class="btn btn-default" ng-click="setMac()">设置新的MAC地址</button>
+                        <button ng-disabled="modifyingMAC" class="btn btn-default" ng-click="setRandomMac()">设置随机MAC地址</button>
+                        <img ng-show="modifyingMAC" src="img/throbber.gif"/>
+                        <br/>
+                        <small class="text-muted">提示: 更改MAC地址将重启WiFi.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6" ng-controller="NetworkingAdvancedController">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">高级
+                    <span class="dropdown">
+                        <button class="btn btn-xs btn-default dropdown-toggle" type="button" id="NetworkingAdvancedDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <small><span class="caret"></span></small>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="NetworkingAdvancedDropdown">
+                            <li ng-click="resetWirelessConfig()"><a>重置WiFi配置到默认值</a></li>
+                        </ul>
+                    </span>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="alert well-sm alert-success" ng-show="wirelessReset">无线配置已被重置。网络现在将重新启动.</div>
+                <div class="alert well-sm alert-success" ng-show="hostnameUpdated">主机名已成功更改.</div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="input-group">
+                            <span class="input-group-addon">主机名</span>
+                            <input type="text" class="form-control" id="hostname" ng-model="data['hostname']">
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" ng-click="setHostname()">更新</button>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <pre class="scrollable-pre">{{ data['ifconfig'] }}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+</div>

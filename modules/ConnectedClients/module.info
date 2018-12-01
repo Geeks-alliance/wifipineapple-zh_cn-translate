@@ -1,0 +1,6 @@
+{
+    "title": "客户端信息",
+    "description": "Connected Clients is an infusion for the Wifi Pineapple that gives information about connected clients",
+    "version": "1.4",
+    "author": "r3dfish"
+}

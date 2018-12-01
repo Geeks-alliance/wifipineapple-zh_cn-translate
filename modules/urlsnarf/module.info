@@ -1,0 +1,6 @@
+{
+    "title": "urlsnarf",
+    "version": "1.4",
+    "author": "Whistle Master",
+    "description": "Output all requested URLs sniffed from http traffic using urlsnarf"
+}

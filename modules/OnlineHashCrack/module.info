@@ -1,0 +1,10 @@
+{
+    "author": "Whistle Master",
+    "description": "Submit Hash and WPA Handshake to www.onlinehashcrack.com web service",
+    "devices": [
+        "nano",
+        "tetra"
+    ],
+    "title": "在线Hash破解",
+    "version": "1.3"
+}

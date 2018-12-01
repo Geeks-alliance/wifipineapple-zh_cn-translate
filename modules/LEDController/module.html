@@ -1,0 +1,275 @@
+<div ng-controller="LEDController">
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading pointer" data-toggle="collapse" data-target="#LEDController" data-parent="#accordion">
+                <h3 class="panel-title">LED控制器</div>
+                    <div id="LEDController" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <h3 style="text-align: center;">LED控制器</h3>
+                            <h6 style="text-align: center;">V版本1.3</h6>
+                            <p style="text-align: center;">Written by Foxtrot</p>
+
+                            <p style="text-align: center;">该插件允许你控制用菠萝派控制LED.</p>
+                            <br/>
+
+                            <center>
+                                <button type="button" class="btn btn-danger" ng-click="resetLEDs()">重置LEDs</button>
+                                <p></p>
+                                <p class="well well-sm alert-success" ng-show="resetConfig">LED已重置为默认值.</p>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="device == 'tetra'">
+                <div class="row">
+                    <div class="col-md-4" ng-controller="TetraYellow">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">黄色</h3>
+                            </div>
+                            <div class="panel-body">
+                                <p class="well well-sm alert-success" ng-show="savedConfig">LED配置生效</p>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="enabled" ng-checked="enabled">开启
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">触发</div>
+                                        <select class="form-control" ng-model="trigger" ng-disabled="!enabled">
+                                            <option value="netdev">Netdev</option>
+                                            <option value="timer">计时器</option>
+                                            <option value="none">None</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="trigger == 'netdev'">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">模式</div>
+                                        <select class="form-control" ng-model="mode">
+                                            <option value="link tx rx">TX & RX</option>
+                                            <option value="link tx">TX</option>
+                                            <option value="link rx">RX</option>
+                                        </select>
+                                    </div>
+                                    <p>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">物理网卡接口</span>
+                                            <input type="text" class="form-control" placeholder="{{interface}}" ng-model="interface">
+                                        </div>
+                                    </p>
+                                </div>
+
+                                <div class="form-group" ng-show="trigger == 'timer'">
+                                    <p>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">开启 (ms)</span>
+                                            <input type="text" class="form-control" placeholder="{{delayOn}}" ng-model="delayOn">
+                                        </div>
+                                    </p>
+                                    <p>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">关闭 (ms)</span>
+                                            <input type="text" class="form-control" placeholder="{{delayOff}}" ng-model="delayOff">
+                                        </div>
+                                    </p>
+                                </div>
+                                <button type="button" class="btn btn-primary" ng-click="setTetraYellow()">保存</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4" ng-controller="TetraBlue">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">蓝色</h3>
+                            </div>
+                            <div class="panel-body">
+                                <p class="well well-sm alert-success" ng-show="savedConfig">LED配置生效</p>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="enabled" ng-checked="enabled">开启
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">触发</div>
+                                        <select class="form-control" ng-model="trigger" ng-disabled="!enabled">
+                                            <option value="netdev">Netdev</option>
+                                            <option value="timer">计时器</option>
+                                            <option value="none">None</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="trigger == 'netdev'">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">模式</div>
+                                        <select class="form-control" ng-model="mode">
+                                            <option value="link tx rx">TX & RX</option>
+                                            <option value="link tx">TX</option>
+                                            <option value="link rx">RX</option>
+                                        </select>
+                                    </div>
+                                    <p>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">物理网卡接口</span>
+                                            <input type="text" class="form-control" placeholder="{{interface}}" ng-model="interface">
+                                        </div>
+                                    </p>
+                                </div>
+
+                                <div class="form-group" ng-show="trigger == 'timer'">
+                                    <p>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">开启 (ms)</span>
+                                            <input type="text" class="form-control" placeholder="{{delayOn}}" ng-model="delayOn">
+                                        </div>
+                                    </p>
+                                    <p>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">关闭 (ms)</span>
+                                            <input type="text" class="form-control" placeholder="{{delayOff}}" ng-model="delayOff">
+                                        </div>
+                                    </p>
+                                </div>
+                                <button type="button" class="btn btn-primary" ng-click="setTetraBlue()">保存</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4" ng-controller="TetraRed">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">红色</h3>
+                            </div>
+                            <div class="panel-body">
+                                <p class="well well-sm alert-success" ng-show="savedConfig">LED配置生效</p>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="enabled" ng-checked="enabled">开启
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">触发</div>
+                                        <select class="form-control" ng-model="trigger" ng-disabled="!enabled">
+                                            <option value="netdev">Netdev</option>
+                                            <option value="timer">计时器</option>
+                                            <option value="none">None</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="trigger == 'netdev'">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">模式</div>
+                                        <select class="form-control" ng-model="mode">
+                                            <option value="link tx rx">TX & RX</option>
+                                            <option value="link tx">TX</option>
+                                            <option value="link rx">RX</option>
+                                        </select>
+                                    </div>
+                                    <p>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">物理网卡接口</span>
+                                            <input type="text" class="form-control" placeholder="{{interface}}" ng-model="interface">
+                                        </div>
+                                    </p>
+                                </div>
+
+                                <div class="form-group" ng-show="trigger == 'timer'">
+                                    <p>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">开启 (ms)</span>
+                                            <input type="text" class="form-control" placeholder="{{delayOn}}" ng-model="delayOn">
+                                        </div>
+                                    </p>
+                                    <p>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">关闭 (ms)</span>
+                                            <input type="text" class="form-control" placeholder="{{delayOff}}" ng-model="delayOff">
+                                        </div>
+                                    </p>
+                                </div>
+                                <button type="button" class="btn btn-primary" ng-click="setTetraRed()">保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="device == 'nano'">
+                <div class="row">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-6" ng-controller="NanoBlue">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">蓝色</h3>
+                            </div>
+                            <div class="panel-body">
+                                <p class="well well-sm alert-success" ng-show="savedConfig">LED配置生效</p>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="enabled" ng-checked="enabled">开启
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">触发</div>
+                                        <select class="form-control" ng-model="trigger" ng-disabled="!enabled">
+                                            <option value="netdev">Netdev</option>
+                                            <option value="timer">计时器</option>
+                                            <option value="none">None</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="trigger == 'netdev'">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">模式</div>
+                                        <select class="form-control" ng-model="mode">
+                                            <option value="link tx rx">TX & RX</option>
+                                            <option value="link tx">TX</option>
+                                            <option value="link rx">RX</option>
+                                        </select>
+                                    </div>
+                                    <p>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">物理网卡接口</span>
+                                            <input type="text" class="form-control" placeholder="{{interface}}" ng-model="interface">
+                                        </div>
+                                    </p>
+                                </div>
+
+                                <div class="form-group" ng-show="trigger == 'timer'">
+                                    <p>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">开启 (ms)</span>
+                                            <input type="text" class="form-control" placeholder="{{delayOn}}" ng-model="delayOn">
+                                        </div>
+                                    </p>
+                                    <p>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">关闭 (ms)</span>
+                                            <input type="text" class="form-control" placeholder="{{delayOff}}" ng-model="delayOff">
+                                        </div>
+                                    </p>
+                                </div>
+                                <button type="button" class="btn btn-primary" ng-click="setNanoBlue()">保存</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                </div>
+            </div>
+        </div>

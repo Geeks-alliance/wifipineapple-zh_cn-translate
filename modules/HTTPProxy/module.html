@@ -1,0 +1,271 @@
+<!-- This HTML has bootstrap classes such as "col-md-12" and "jumbotron". For more information, see http://getbootstrap.com/css/ -->
+<!-- This HTML makes use of AngularJS data-bindings and controllers. For more information, see https://docs.angularjs.org/api/ -->
+<!-- Don't forget to look at the module.js and module.php files too! -->
+<!-- This HTML is a template for generated modules via the Module Maker. -->
+
+<div class="col-md-12" ng-controller="HTTPProxyPortalController">
+
+<div class="row ng-scope">
+    <div class="col-md-12">
+        <div class="panel panel-default ng-scope" ng-controller="HTTPProxyPortalController">
+            <div class="panel-heading">
+				<h3 class="panel-title">控制台</h3>
+            </div>
+			<div class="panel-body">
+			   	<button class="btn btn-primary btn-lg" ng-click="handleRequest('Start')" >启动HTTP代理处理程序</button >
+           <button  class="btn btn-primary btn-lg" ng-click="handleRequest('Stop')"   >停止HTTP代理处理程序</button >
+           <br/>
+			</br>
+ <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#ModalHTTPProxyHandler"  ng-click="viewHTTPProxyHandler()">查看/编辑HTTP代理程序</button>
+
+     	<p class="alert ">{{ resp }}</p>
+
+
+        <!-- Modal -->
+<div id="ModalHTTPProxyHandler" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">响应页面代码: </h4>
+      </div>
+      <div class="modal-body">
+           
+      <textarea class="form-control" style="min-width: 100%;height:200px" ng-model="HTTPProxyHandlerCode">
+      {{ HTTPProxyHandlerCode }}
+      </textarea>
+         	<p class="alert ">{{ HTTPProxyHandlerResp }}</p>
+
+      </div>
+      <div class="modal-footer">
+                          <button type="button" class="btn btn-default"  ng-click="updateHTTPProxyHandlerPage()">更新</button>
+
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+			</div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+<div class="row ng-scope">
+    <div class="col-md-12">
+        <div class="panel panel-default ng-scope" ng-controller="HTTPProxyPortalController">
+
+            <div class="panel-heading">
+				<h3 class="panel-title">注入HTML</h3>
+            </div>
+			<div class="panel-body">
+
+                  HTML代码: <textarea class="form-control" style="min-width: 100%;height:200px" ng-model="htmlValue" ng-init="FunCall()" id="htmlvalue">{{ htmlValue }}</textarea>
+            <br/>
+                        <button  class="btn btn-sm btn-default"  ng-click="saveHtml()">保存HTML</button >
+                        <button  class="btn btn-sm btn-default"  ng-click="disableKeyLogger()">重置HTML</button >
+
+            	<p class="alert ">{{ resp }}</p>
+			</div>
+        </div>
+    </div>
+
+      <div class="col-md-6">
+        <div class="panel panel-default ng-scope" ng-controller="HTTPProxyPortalController">
+
+            <div class="panel-heading">
+				<h3 class="panel-title">Response.php设置</h3>
+            </div>
+			<div class="panel-body">
+
+
+            响应页面 :
+
+            </br>
+
+
+ <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModal"  ng-click="viewResponsePage()">查看/编辑响应页面</button>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">响应页面代码: </h4>
+      </div>
+      <div class="modal-body">
+
+      <textarea class="form-control" style="min-width: 100%;height:200px" ng-model="phpCode">
+      {{ phpCode }}
+      </textarea>
+         	<p class="alert ">{{ resp }}</p>
+
+      </div>
+      <div class="modal-footer">
+                          <button type="button" class="btn btn-default"  ng-click="updateResponsePage()">更新</button>
+
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+<!-- Modal -->
+<div id="log" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">日志文件: </h4>
+      </div>
+      <div class="modal-body">
+
+      <p>
+      {{ logFile }}
+      </p>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+                     </br>
+                     </br>
+
+ <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#log"  ng-click="viewLog()">查看日志文件</button>
+
+
+            </div>
+            </div>
+            </div>
+                       
+
+                 <div class="col-md-6">
+        <div class="panel panel-default ng-scope" ng-controller="HTTPProxyPortalController">
+
+            <div class="panel-heading">
+				<h3 class="panel-title">键盘记录器设置</h3>
+            </div>
+			<div class="panel-body">
+              <button  class="btn btn-sm btn-default"  ng-click="enableKeyLogger()">启用键盘记录器</button >
+              <br/>
+              <br/>
+
+           <button  class="btn btn-sm btn-default"  ng-click="disableKeyLogger()">关闭键盘记录器</button >
+                             <br/>
+			</br>
+            <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#viewKeyLoggerLog"  ng-click="viewKeyLoggerLog()">查看日志文件</button>
+
+
+
+
+
+            <!-- Modal -->
+<div id="viewKeyLoggerLog" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">查看键盘记录器日志</h4>
+      </div>
+      <div class="modal-body">
+
+      <p>
+      {{ viewKeyLoggerLogText }}
+      </p>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- end -->
+
+
+
+
+			</div>
+            </div>
+                 </div>
+        <!--   <div class="col-md-4">
+        <div class="panel panel-default ng-scope" ng-controller="HTTPProxyPortalController">
+
+            <div class="panel-heading">
+				<h3 class="panel-title">Injection Scope </h3>
+            </div>
+			<div class="panel-body">
+            Apply on :
+            <br/>
+
+                   <select
+                ng-model="selectedOption"
+                ng-options="option.name for option in options" ng-change="updateSelected()">
+            </select>
+            <br/>
+            <br/>
+               <div class="form-group" ng-show="selectedOption.value == '2'">
+                   <input type="text" ng-model="specificUrls" placeholder="exmaple:www.hak5.com , www.google.com"/>
+               </div>
+
+
+                 <div class="form-group" ng-show="selectedOption.value == '3'">
+                   <input type="text" ng-model="excludeUrls" placeholder="exmaple:www.hak5.com , www.google.com" />
+               </div>
+
+           <button  class="btn btn-sm btn-default"  ng-click="saveInjectionScope()">Save</button >
+            <p>{{ resp }}</p>
+
+			</div>
+        </div>
+              </div>
+
+
+			</div> !-->
+        </div>
+    </div>
+
+</div>
+
+
+
+</div>
+
+
+
+

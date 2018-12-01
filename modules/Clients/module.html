@@ -1,0 +1,53 @@
+<div class="row" ng-controller="ClientsController">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">客户端列表<button class="btn btn-default btn-xs btn-fixed-length pull-right" ng-click="getClientData()">刷新</button></h3>
+            </div>
+            <div class="table-responsive table-dropdown" ng-show="clients.length">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>MAC地址</th>
+                        <th>IP地址</th>
+                        <th>热点</th>
+                        <th>主机名</th>
+                        <th>踢掉客户端</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="client in clients">
+                        <td>
+                            <hook-button hook="mac" content="client['mac'].toUpperCase()" probes="true" client="true"></hook-button>
+                            <span class="autoselect uppercase">{{ client['mac'] }}</span>
+                        </td>
+                        <td>
+                            <span ng-class="client['ip'] === undefined ? 'text-info' : 'autoselect'">
+                                {{ client['ip'] == null ? "没有IP地址" : client['ip'] }}
+                            </span>
+                        </td>
+                        <td>
+                            <hook-button ng-if="client['ssid']" hook="ssid" content="client['ssid']" client="true"></hook-button>
+                            <span ng-class="client['ssid'] === undefined ? 'text-info' : 'autoselect'" >
+                                {{ client['ssid'] == null ? '没有热点' : client['ssid'] }}
+                            </span>
+                        </td>
+                        <td>
+                            <span ng-class="client['host'] === undefined ? 'text-info' : 'autoselect'" >
+                                {{ client['host'] == null ? '没有主机名' : client['host'] }}
+                            </span>
+                        </td>
+                        <td>
+                            <button ng-hide="client['kicking']" type="button" class="btn btn-default" ng-click="kickClient(client)">踢掉</button>
+                            <img ng-show="client['kicking']" src='img/throbber.gif'>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel-body" ng-hide="clients.length">
+                没有客户端被发现.
+            </div>
+        </div>
+    </div>
+</div>

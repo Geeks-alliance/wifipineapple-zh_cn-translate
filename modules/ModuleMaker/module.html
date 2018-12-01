@@ -1,0 +1,118 @@
+<!-- Foxtrot (C) 2016 <foxtrotnull@gmail.com> -->
+<div>
+	<div class="row">
+		<div class="col-md-7">
+			<div class="panel panel-default" ng-controller="ModuleMakerGenerator">
+				<div class="panel-heading">
+					<h3 class="panel-title">创建 
+
+						<button type="button" class="close pull-right" data-toggle="modal" data-target="#information" aria-label="Close"><span aria-hidden="true">i</span></button>
+					</h3>
+				</div>
+				<div class="panel-body">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">标题</label>
+							<div class="col-sm-7">
+								<input type="text" class="form-control" ng-model="moduleTitle" placeholder="Some Module">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">依赖状态</label>
+							<div class="col-sm-7">
+								<input type="text" class="form-control" ng-model="moduleDesc" placeholder="This is an example module">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">版本</label>
+							<div class="col-sm-7">
+								<input type="text" class="form-control" ng-model="moduleVersion" placeholder="1.0">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">作者</label>
+							<div class="col-sm-7">
+								<input type="text" class="form-control" ng-model="moduleAuthor" placeholder="Author">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-7 col-md-offset-2">
+								<button class="btn btn-success" ng-click="generateModule();">生成</button>
+							</div>
+						</div>
+					</form>
+
+					<p class="well well-sm alert-success" ng-show="generateSuccess">成功创建了插件<b>{{moduleName}}</b></p>
+					<p class="well well-sm alert-danger" ng-show="generateFailure">{{generateFailure}}</p>
+				</div>
+			</div>
+			<div id="information" class="modal fade" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">信息</h4>
+						</div>
+						<div class="modal-body">
+							<h3>module.html</h3>
+							<p>此文件夹包含要在UI内显示的插件的HTML。HTML、JavaScript和PHP一起工作，以创建一个响应和动态的插件。.</p>
+
+							<h3>module.info</h3>
+							<p>这个简单的JSON文件包含您的插件的基本信息，例如名称、版本和作者.</p>
+
+							<h3>js/</h3>
+							<p>JS文件夹包含您的插件的所有JavaScript。注意，您不需要包含jQuery或引导库，因为它们已经内置到UI中。.</p>
+
+							<h3>api/</h3>
+							<p>API文件夹包含您的插件的PHP。插件PHP文件必须包含扩展插件类的类.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default" ng-controller="ModuleMakerManager">
+				<div class="panel-heading">
+					<h3 class="panel-title" title="Modules are stored at /pineapple/modules">管理
+					<button type="button" ng-click="getInstalledModules();" class="close pull-right"aria-label="Refresh"><span aria-hidden="true">&#8635;</span></button>
+					</h3>
+				</div>
+				<div class="table-responsive table-dropdown">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>插件</th>
+								<th>版本</th>
+								<th>依赖</th>
+								<th>作者</th>
+								<th>行动</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="(moduleName, module) in installedModules" ng-hide="(module['type'] === 'System')">
+								<td>
+									{{ module['title'] }}
+								</td>
+								<td>
+									{{ module['version'] }}
+								</td>
+								<td>
+									{{ module['description'] }}
+								</td>
+								<td>
+									{{ module['author'] }}
+								</td>
+								<td>
+									<button type="button" class="btn btn-danger btn-xs btn-fixed-length" ng-click="removeModule(moduleName)">移除</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<p class="well well-sm alert-success" ng-show="removedModule">移除成功</p>
+			</div>
+		</div>
+	</div>
+</div>

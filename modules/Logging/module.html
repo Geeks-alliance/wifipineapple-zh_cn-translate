@@ -1,0 +1,105 @@
+<div class="panel-group" id="accordion">
+    <div class="panel panel-default" ng-controller="PineAPLogController">
+        <div class="panel-heading pointer" data-toggle="collapse" data-target="#PineAP" data-parent="#accordion">
+            <h4 class="panel-title">PineAP 日志</h4>
+        </div>
+        <div id="PineAP" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <div class="input-group">
+                    <div class="checkbox">
+                        <label><input type="checkbox" ng-model="checkboxOptions.probes">显示探测</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" ng-model="checkboxOptions.associations">显示 (非连接)连接</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" ng-model="checkboxOptions.removeDuplicates">删除重复项</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <span class="input-group-addon">SSID</span>
+                            <input type="text" class="form-control" placeholder="SSID" ng-model="ssid">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">MAC地址</span>
+                            <input type="text" class="form-control" placeholder="00:11:22:33:44:55" ng-model="mac">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">保存位置
+</span>
+                            <input type="text" class="form-control" placeholder="SSID" ng-model="logLocation">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="setPineapLogLocation()">保存</button>
+                            </span>
+                        </div>
+                        <p class="alert well-sm alert-success" ng-show="locationModified">PineAP 日志存储位置已保存. 您必须重新启动设备以使更改生效.</p>
+                    </div>
+                </div>
+                <br/>
+                <button class="btn btn-default" ng-click="applyFilter()">应用过滤</button>
+                <button class="btn btn-default" ng-click="clearFilter()">清除过滤</button>
+                <button class="btn btn-default" ng-click="refreshLog()">刷新日志</button>
+                <button class="btn btn-default" ng-click="clearLog()">清除日志</button>
+                <button class="btn btn-default" ng-click="downloadLog()">下载日志</button>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover" ng-hide="(log.length == 0)">
+                    <thead>
+                        <tr class="default-cursor">
+                            <th ng-click="orderByName='log_time'; reverseSort = !reverseSort">时间戳<span ng-show="orderByName=='log_time'"><span class="caret" ng-show="reverseSort"></span><span class="caret caret-reversed" ng-show="!reverseSort"></span></span></th>
+                            <th ng-click="orderByName='log_type'; reverseSort = !reverseSort">事件<span ng-show="orderByName=='log_type'"><span class="caret" ng-show="reverseSort"></span><span class="caret caret-reversed" ng-show="!reverseSort"></span></span></th>
+                            <th ng-click="orderByName='mac'; reverseSort = !reverseSort">客户端MAC地址<span ng-show="orderByName=='mac'"><span class="caret" ng-show="reverseSort"></span><span class="caret caret-reversed" ng-show="!reverseSort"></span></span></th>
+                            <th ng-click="orderByName='ssid'; reverseSort = !reverseSort">SSID<span ng-show="orderByName=='ssid'"><span class="caret" ng-show="reverseSort"></span><span class="caret caret-reversed" ng-show="!reverseSort"></span></span></th>
+                            <th ng-click="orderByName='log_count'; reverseSort = !reverseSort">连接总数<span ng-show="orderByName=='log_count'"><span class="caret" ng-show="reverseSort"></span><span class="caret caret-reversed" ng-show="!reverseSort"></span></span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="entry in log|orderBy:orderByName:reverseSort" ng-if="(entry != '' && entry.hidden != true)">
+                            <td>{{ entry.log_time }}</td>
+                            <td ng-if="entry.log_type == 0">探测请求</td>
+                            <td ng-if="entry.log_type == 1">连接</td>
+                            <td ng-if="entry.log_type == 2">未连接</td>
+                            <td class="autoselect"><hook-button hook="mac" content="entry.mac"></hook-button> {{ entry.mac }}</td>
+                            <td class="autoselect"><hook-button hook="ssid" content="entry.ssid"></hook-button> {{ entry.ssid }}</td>
+                            <td ng-if="entry.log_type == 0">{{ entry.log_count}}</td>
+                            <td ng-if="entry.log_type != 0">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default" ng-controller="SyslogController">
+        <div class="panel-heading pointer" data-toggle="collapse" data-target="#Syslog" data-parent="#accordion">
+            <h4 class="panel-title">系统日志</h4>
+        </div>
+        <div id="Syslog" class="panel-collapse collapse">
+            <div class="panel-body">
+                <pre class="scrollable-pre log-pre">{{ syslog }}</pre>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default" ng-controller="DmesgController">
+        <div class="panel-heading pointer" data-toggle="collapse" data-target="#Dmesg" data-parent="#accordion">
+            <h4 class="panel-title">系统启动信息</h4>
+        </div>
+        <div id="Dmesg" class="panel-collapse collapse">
+            <div class="panel-body">
+                <pre class="scrollable-pre log-pre">{{ dmesg }}</pre>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default" ng-controller="ReportingLogController">
+        <div class="panel-heading pointer" data-toggle="collapse" data-target="#Reporting" data-parent="#accordion">
+            <h4 class="panel-title">报告日志</h4>
+        </div>
+        <div id="Reporting" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p ng-show="reportingLog.trim() == ''">尚未找到日志记录.</p>
+                <pre class="scrollable-pre log-pre" ng-hide="reportingLog.trim() == ''">{{ reportingLog }}</pre>
+            </div>
+        </div>
+    </div>
+</div>

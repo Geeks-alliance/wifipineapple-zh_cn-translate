@@ -1,0 +1,10 @@
+{
+    "author": "Whistle Master",
+    "description": "Display status information of the device",
+    "devices": [
+        "nano",
+        "tetra"
+    ],
+    "title": "系统状态信息",
+    "version": "1.2"
+}

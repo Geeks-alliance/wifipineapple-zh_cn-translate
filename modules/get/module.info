@@ -1,0 +1,6 @@
+{
+    "title": "get",
+    "description": "Profile clients through the browser plugins supported by their browser",
+    "version": "1.2",
+    "author": "dustbyter"
+}

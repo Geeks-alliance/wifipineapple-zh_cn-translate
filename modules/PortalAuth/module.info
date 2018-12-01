@@ -1,0 +1,10 @@
+{
+    "author": "sud0nick",
+    "description": "Captive portal cloner and payload distributor.",
+    "devices": [
+        "nano",
+        "tetra"
+    ],
+    "title": "门户认证",
+    "version": "1.7"
+}

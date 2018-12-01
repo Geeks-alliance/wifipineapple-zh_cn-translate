@@ -1,0 +1,6 @@
+{
+    "title": "DNSMasq欺骗",
+    "version": "1.0",
+    "author": "Whistle Master",
+    "description": "Forge replies to arbitrary DNS queries using DNSMasq"
+}

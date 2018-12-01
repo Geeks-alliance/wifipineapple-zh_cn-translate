@@ -1,0 +1,59 @@
+<div ng-controller="ConnectedClientsController">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title pull-left">{{title}}</h4>
+			<span class="pull-right">v{{version}}</span>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading pointer" data-toggle="collapse" data-target="#ClientsContainer">
+			<h4 class="panel-title pull-left">客户端信息</h4>
+			<span class="pull-right">连接的总数: {{ clientslength }}</span>
+			<div class="clearfix"></div>
+		</div>
+		<div id="ClientsContainer" class="panel-collapse collapse in">
+			<h3 class="text-center">Wlan0</h3>
+			<table class="table table-striped table-bordered text-center">
+				<tr><th class="text-center">Mac地址</th><th class="text-center">解除连接</th><th class="text-center">取消认证攻击</th><th class="text-center">黑名单</th></tr>
+				<tr ng-repeat="wlan0 in wlan0clients"><td>{{ wlan0 }}</td><td><button type="button" class="btn btn-danger" ng-click="disassociateMac(wlan0)">解除连接</button></td><td><button type="button" class="btn btn-danger" ng-click="deauthenticateMac(wlan0)">取消认证攻击</button></td><td><button type="button" class="btn btn-danger" ng-click="addMacAddress(wlan0)">黑名单</button></td></tr>
+			</table>
+			<h3 class="text-center">Wlan0-1</h3>
+			<table class="table table-striped table-bordered text-center">
+				<tr><th class="text-center">Mac地址</th><th class="text-center">解除连接</th><th class="text-center">取消认证攻击</th><th class="text-center">黑名单</th></tr>
+				<tr ng-repeat="wlan01 in wlan01clients"><td>{{ wlan01 }}</td><td><button type="button" class="btn btn-danger" ng-click="disassociateMac(wlan01)">解除连接</button></td><td><button type="button" class="btn btn-danger" ng-click="deauthenticateMac(wlan01)">取消认证攻击</button></td><td><button type="button" class="btn btn-danger" ng-click="addMacAddress(wlan01)">黑名单</button></td></tr>
+			</table>
+			<h3 class="text-center">Wlan1</h3>
+			<table class="table table-striped table-bordered text-center">
+				<tr><th class="text-center">Mac地址</th><th class="text-center">解除连接</th><th class="text-center">取消认证攻击</th><th class="text-center">黑名单</th></tr>
+				<tr ng-repeat="wlan1 in wlan1clients"><td>{{ wlan1 }}</td><td><button type="button" class="btn btn-danger" ng-click="disassociateMac(wlan1)">解除连接</button></td><td><button type="button" class="btn btn-danger" ng-click="deauthenticateMac(wlan1)">取消认证攻击</button></td><td><button type="button" class="btn btn-danger" ng-click="addMacAddress(wlan1)">黑名单</button></td></tr>
+			</table>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading pointer" data-toggle="collapse" data-target="#DHCPContainer">
+			<h4 class="panel-title pull-left">DHCP</h4>
+			<span class="pull-right">总数: {{ dhcplength }}</span>
+			<div class="clearfix"></div>
+		</div>
+		<div id="DHCPContainer" class="panel-collapse collapse in">
+			<table class="table table-striped table-bordered text-center">
+				<tr><th class="text-center">主机名</th><th class="text-center">IP地址</th><th class="text-center">MAC地址</th><th class="text-center">黑名单</th></tr>
+				<tr ng-repeat="dhcplease in dhcpleases"><td>{{ dhcplease[3] }}</td><td>{{ dhcplease[2] }}</td><td>{{ dhcplease[1] }}</td><td><button type="button" class="btn btn-danger" ng-click="addMacAddress(dhcplease[1])">黑名单</button></td></tr>
+			</table>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading pointer" data-toggle="collapse" data-target="#BlacklistContainer">
+			<h4 class="panel-title pull-left">黑名单</h4>
+			<span class="pull-right">总数: {{ blacklistlength }}</span>
+			<div class="clearfix"></div>
+		</div>
+		<div id="BlacklistContainer" class="panel-collapse collapse in">
+			<table class="table table-striped table-bordered text-center">
+				<tr><th class="text-center">MAC地址</th><th class="text-center">移除</th></tr>
+				<tr ng-repeat="mac in blacklist track by $index"><td>{{ mac }}</td><td><button type="button" class="btn btn-danger" ng-click="removeMacAddress(mac)">移除</button></td></tr>
+			</table>
+		</div>
+	</div>
+</div>

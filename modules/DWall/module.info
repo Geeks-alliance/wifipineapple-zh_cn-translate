@@ -1,0 +1,10 @@
+{
+    "author": "Sebkinne",
+    "description": "Display's HTTP URLs, Cookies, POST DATA, and images from browsing clients.",
+    "devices": [
+        "nano",
+        "tetra"
+    ],
+    "title": "图片网址抓取",
+    "version": "1.2"
+}

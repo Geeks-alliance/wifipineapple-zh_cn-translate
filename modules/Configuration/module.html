@@ -1,0 +1,136 @@
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default" ng-controller="ConfigurationGeneralController">
+            <div class="panel-heading">
+                <h3 class="panel-title">一般设置
+                    <span class="dropdown">
+                        <button class="btn btn-xs btn-default dropdown-toggle" type="button" id="generalDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="generalDropdown">
+                            <li ng-click="haltPineapple()"><a>关闭 Pineapple设备</a></li>
+                            <li ng-click="rebootPineapple()"><a>重启 Pineapple设备</a></li>
+                            <li ng-click="resetPineapple()"><a>将Pineapple恢复出厂设置</a></li>
+                        </ul>
+                    </span>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-sm-10">
+                    <div class="alert well-sm alert-success" ng-show="actionMessage.length != 0">{{ actionMessage }}</div>
+                    <div class="row">
+                        <div class="input-group">
+                            <span class="input-group-addon">当前时区</span>
+                            <input type="text" class="form-control" ng-model="currentTimeZone" disabled>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="input-group">
+                            <span class="input-group-addon">更改时区</span>
+                            <select class="form-control" ng-init="selectedTimeZone = timeZones[12]" ng-model="selectedTimeZone" ng-options="timeZone.description for timeZone in timeZones"></select>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="input-group">
+                            <span class="input-group-addon">自定义时区</span>
+                            <input type="text" class="form-control" placeholder="UTC+0030" ng-model="customOffset">
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <p class="alert well-sm alert-success" ng-show="showTimeZoneSuccess">时区更改成功.</p>
+                        <div class="input-group">
+                            <button type="button" class="btn btn-default" ng-click="changeTimezone()">保存时区</button>
+                        </div>
+                    </div>
+                    <br/><br/><br/>
+                    <div class="row">
+                        <div class="input-group">
+                            <span class="input-group-addon">旧密码</span>
+                            <input type="password" class="form-control" ng-model="oldPassword">
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="input-group">
+                            <span class="input-group-addon">新密码</span>
+                            <input type="password" class="form-control" ng-model="newPassword">
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="input-group">
+                            <span class="input-group-addon">重复输入新密码</span>
+                            <input type="password" class="form-control" ng-model="newPasswordRepeat">
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <p class="alert well-sm alert-success" ng-show="showPasswordSuccess">密码修改成功.</p>
+                        <p class="alert well-sm alert-danger" ng-show="showPasswordError">请检查2次输入的密码是否一致.</p>
+                        <div class="input-group">
+                            <button type="button" class="btn btn-default" ng-click="changePassword()">更改密码</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="panel panel-default" ng-controller="ConfigurationLandingPageController">
+            <div class="panel-heading">
+                <h3 class="panel-title">登陆页面</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">登陆页面: {{ landingPageStatus }}</span>
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="toggleLandingPage()">开关</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">自动开启: {{ autoStartStatus }}</span>
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="toggleAutoStart()">开关</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <form class="form-horizontal">
+                    <textarea class="form-control" rows="18" ng-model="landingPage"></textarea>
+                    <br/>
+                    <p class="alert well-sm alert-success" ng-show="pageSaved">登陆页面保存成功</p>
+                    <button type="submit" class="btn btn-default" ng-click="saveLandingPage()">保存</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6" ng-controller="ButtonScriptController">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">按钮脚本</h3>
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal">
+                    <p class="text-muted text-sm">每当重置按钮被按下少于5秒时，此按钮脚本就会运行。.</p>
+                    <textarea class="form-control" rows="10" ng-model="buttonScript"></textarea>
+                    <br/>
+                    <p class="alert well-sm alert-success" ng-show="scriptSaved">按钮脚本成功保存</p>
+                    <p class="alert well-sm alert-danger" ng-show="scriptError">{{ scriptError }}</p>
+                    <button type="submit" class="btn btn-default" ng-click="saveButtonScript()">保存</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

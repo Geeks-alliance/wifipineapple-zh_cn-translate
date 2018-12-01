@@ -1,0 +1,6 @@
+{
+    "title": "base64encdec",
+    "description": "Base64 encoder and decoder",
+    "version": "1.0",
+    "author": "dustbyter"
+}

@@ -1,0 +1,6 @@
+{
+    "title": "dump1090",
+    "version": "1.1",
+    "author": "Whistle Master",
+    "description": "Track aircraft ADS-B beacons with RTS-SDR using dump1090"
+}

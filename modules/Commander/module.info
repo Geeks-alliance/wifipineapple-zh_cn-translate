@@ -1,0 +1,10 @@
+{
+    "author": "Foxtrot",
+    "description": "Control the Pineapple via IRC",
+    "devices": [
+        "nano",
+        "tetra"
+    ],
+    "title": "指挥官",
+    "version": "2.1"
+}

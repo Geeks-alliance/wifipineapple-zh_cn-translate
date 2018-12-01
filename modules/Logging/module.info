@@ -1,0 +1,12 @@
+{
+    "author": "Hak5",
+    "description": "Manage and view various logs.",
+    "devices": [
+        "nano",
+        "tetra"
+    ],
+    "system": true,
+    "title": "系统日志",
+    "version": "1.0",
+    "index": 8
+}

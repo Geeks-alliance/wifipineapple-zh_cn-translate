@@ -1,0 +1,10 @@
+{
+    "author": "Whistle Master",
+    "description": "Deauthentication attacks of all devices connected to APs nearby",
+    "devices": [
+        "nano",
+        "tetra"
+    ],
+    "title": "WiFi干扰",
+    "version": "1.5"
+}

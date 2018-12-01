@@ -1,0 +1,6 @@
+{
+    "title": "DNS欺骗",
+    "version": "1.3",
+    "author": "Whistle Master",
+    "description": "Forge replies to arbitrary DNS queries using DNSspoof"
+}

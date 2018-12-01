@@ -1,0 +1,227 @@
+<div class="h4 well"> autossh </div>
+
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="panel panel-default" style="min-height:226.5px" ng-controller="autosshMainCtrl">
+
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          控制台
+        </h3>
+      </div>
+
+      <div class="panel-body">
+        <table class="table">
+          <tbody>
+
+            <tr class="form-inline">
+              <td class="text-muted">autossh</td>
+              <td>
+                <div class="hidden-xs">
+                  <button ng-show="isRunning" type="button" class="btn btn-sm btn-danger pull-right" ng-click="stopAutossh()">停止</button>
+                  <button ng-hide="isRunning" type="button" class="btn btn-sm btn-primary pull-right" ng-click="startAutossh()">开启</button>
+                </div>
+                <div class="visible-xs">
+                  <button ng-show="isRunning" type="button" class="btn btn-lg btn-danger pull-right" ng-click="stopAutossh()">停止</button>
+                  <button ng-hide="isRunning" type="button" class="btn btn-lg btn-primary pull-right" ng-click="startAutossh()">开启</button>
+                </div>
+
+              </td>
+            </tr>
+
+            <tr>
+              <td class="text-muted">Autostart</td>
+              <td>
+                <div class="btn-group pull-right">
+                  <div class="hidden-xs">
+                    <button ng-click="enableAutossh()" ng-class="!isEnabled ? 'btn-default' : 'btn-success'" class="btn btn-sm">I</button>
+                    <button ng-click="disableAutossh()" ng-class="!isEnabled ? 'btn-danger' : 'btn-default'" class="btn btn-sm">0</button>
+                  </div>
+                  <div class="visible-xs">
+                    <button ng-click="enableAutossh()" ng-class="!isEnabled ? 'btn-default' : 'btn-success'" class="btn btn-lg">I</button>
+                    <button ng-click="disableAutossh()" ng-class="!isEnabled ? 'btn-danger' : 'btn-default'" class="btn btn-lg">0</button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="panel panel-default" ng-controller="autosshConfCtrl">
+
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          配置
+        </h3>
+      </div>
+
+      <div class="panel-body">
+
+        <form class="form-horizontal" ng-submit="writeConf()">
+          <div class="row" style="margin-bottom: 1.4em">
+
+            <div class="col-md-12">
+
+              <div class="col-md-3">
+                <label>用户</label>
+                <input type="text" class="form-control" placeholder="Username" ng-model=formData.user>
+              </div>
+
+              <div class="col-md-6">
+                <label>主机</label>
+                <input type="text" class="form-control" placeholder="Hostname or IP" ng-model=formData.host>
+              </div>
+
+              <div class="col-md-3">
+                <label>端口</label>
+                <input type="text" class="form-control" placeholder="Remote SSH Port" ng-model=formData.port>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row" style="margin-bottom: 1.4em">
+
+            <div class="col-md-12">
+              <div class="col-md-4">
+                <label>远程端口</label>
+
+                <input type="text" class="form-control" placeholder="Remote Listening Port" ng-model=formData.rport>
+              </div>
+
+              <div class="col-md-4">
+                <label>本地端口</label>
+                <input type="text" class="form-control" placeholder="Local SSH Port" ng-model=formData.lport>
+              </div>
+
+              <div class="hidden-xs">
+
+                <div class="col-md-2" style="margin-top: 1.8em;">
+                  <button type="submit" class="btn btn-primary btn-block">
+                    保存
+                    <img ng-show="savingConf" src="img/throbber.gif" class="ng-hide">
+                  </button>
+
+                </div>
+                <div class="col-md-2" style="margin-top: 1.8em;">
+                  <button type="button" ng-click="resetConf()" class="btn btn-danger btn-block">重置</button>
+                </div>
+              </div>
+              <div class="visible-xs">
+
+                <div class="col-md-2" style="margin-top: 1.8em;">
+                  <button type="submit" class="btn btn-primary btn-lg btn-block">
+                    保存
+                    <img ng-show="savingConf" src="img/throbber.gif" class="ng-hide">
+                  </button>
+
+                </div>
+                <div class="col-md-2" style="margin-top: 1.8em;">
+                  <button type="button" ng-click="resetConf()" class="btn btn-danger btn-lg btn-block">重置</button>
+                </div>
+              </div>
+
+
+            </div>
+
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+
+  </div>
+
+
+</div>
+
+
+<div class="form-group hidden-xs hidden-sm">
+  <samp class="input-group">
+      <span class="input-group-addon input-sm">运行命令</span>
+      <input type="text" class="form-control input-sm" value="{{cmdThatRuns}}" disabled>
+    </samp>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default" ng-controller="firstRunCtrl">
+
+      <div class="panel-heading" data-toggle="collapse" data-target="#first-run" href="#first-run">
+        <h3 class="panel-title">
+        附加配置
+      </h3>
+      </div>
+
+      <div class="panel-body collapse" id="first-run">
+
+        <div class="col-md-6">
+
+          <div class="key-pair" ng-hide="pubKey">
+            <div class="h4">生成密钥</div>
+            <button ng-click="createSshKey()" type="button" class="btn btn-primary" ng-disabled="generatingKeys">
+              创建
+            </button>
+            <img ng-show="generatingKeys" src="img/throbber.gif" class="ng-hide">
+          </div>
+
+          <div class="key-pair " ng-show="pubKey" ng-show="pubKey">
+            <div class="h4">你的公共密钥</div>
+            <pre style="white-space:normal;min-height: 165px">{{pubKey}}</pre>
+            <button type="button" class="btn btn-block btn-danger" ng-click="deleteKey()">删除/重建密钥</button>
+            <br>
+            <div class="hidden-xs hidden-sm">
+              <div class="h4">将其附加到服务器</div>
+              <div class="h5">通过SSH连接到设备后运行命令</div>
+              <pre style="white-space:normal">
+                {{sshCopyCommand}}
+              </pre>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-6 hidden-xs hidden-sm">
+          <div class="h4">已知主机</div>
+          <div class="h5" ng-hide="knownHosts">保存上面的配置并添加到到已知主机列表里。必须有互联网连接. </div>
+          <pre id="hosts" ng-show="knownHosts" style="white-space:pre;min-height: 165px">{{knownHosts}}</pre>
+        </div>
+        <hr>
+
+        <div class="col-md-12 hidden-xs hidden-sm">
+          <hr>
+        </div>
+
+        <div class="col-md-12">
+          <div class="h4">
+            说明
+          </div>
+          <dl class="col-md-12">
+            <dt>主机名或者IP地址</dt>
+            <dd>要连接到的SSH服务器的URL或IP地址</dd>
+            <br>
+            <dt>端口</dt>
+            <dd>设置主机用来侦听SSH连接请求的端口。22除非改变主机上的SSHD配置文件</dd>
+            <br>
+            <dt>远程(监听)端口</dt>
+            <dd>主机上的端口将返回到菠萝派的本地SSH端口</dd>
+            <br>
+            <dt>本地SSH端口</dt>
+            <dd>菠萝派SSH端口默认是22,除非改变</dd>
+            <br>
+
+          </dl>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+{
+    "author": "Hak5",
+    "description": "View and manage connected clients.",
+    "devices": [
+        "nano",
+        "tetra"
+    ],
+    "system": true,
+    "title": "客户端",
+    "version": "1.0",
+    "index": 3
+}

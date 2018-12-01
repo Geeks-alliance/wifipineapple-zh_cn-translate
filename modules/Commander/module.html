@@ -1,0 +1,62 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">指挥官
+					<button type="button" class="close pull-right" data-toggle="modal" data-target="#information" aria-label="Close"><span aria-hidden="true">i</span></button></h3></h3>
+				</div>
+			</div>
+		</div>
+		<div id="information" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">信息</h4>
+					</div>
+					<div class="modal-body">
+						<h3><center>Commander 1.0</center></h3>
+						<h5><center>Written by Foxtrot</center></h5>
+						<h5><center>这个模块允许你通过连接到你指定的服务器的客户端来控制IRC上的WiFi菠萝。然后，可以通过与它交谈的方式来指定要执行的自定义命令，就像它是一个人一样。.</center></h5>
+						<br/><br/>
+						<h5 class="text-danger"><center>请合法地使用!</center></h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-5" ng-controller="CommanderController">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">控制台</h3>
+				</div>
+				<div class="panel-body">
+					状态 : <span class="text-success" ng-show="commanderRunning">Running</span> <span ng-hide="commanderRunning" class="text-danger">没有运行!</span>
+
+					<button class="btn btn-sm btn-primary pull-right" ng-click="startCommander()" ng-hide="commanderRunning">开启</button>
+					<button class="btn btn-sm btn-primary pull-right" ng-click="stopCommander()" ng-show="commanderRunning">停止</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-7" ng-controller="CommanderManageController">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">管理
+						<button type="button" ng-click="getConfiguration();" class="close pull-right"aria-label="Refresh"><span aria-hidden="true">&#8635;</span></button></h3>
+					</div>
+					<div class="panel-body">
+						<p>编辑配置:</p>
+						<p>
+							<textarea class="form-control" rows="15" ng-model="CommanderConfiguration"></textarea>
+						</p>
+
+						<p class="well well-sm alert-success" ng-show="configSaved">配置已保存</p>
+						<button type="submit" class="btn btn-sm btn-primary" ng-click="saveConfiguration()">保存配置</button>
+						<button type="submit" class="btn btn-sm btn-warning" ng-click="restoreDefaultConfiguration()">恢复默认设置</button>
+					</div>
+				</div>
+			</div>
+		</div>
